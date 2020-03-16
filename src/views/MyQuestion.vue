@@ -69,11 +69,11 @@
             ,
             page(currentPage) {
                 const that = this
-                this.$axios.get('http://localhost:8181/Question/findAll/' + (currentPage - 1) + '/10').then(function (resp) {
-                    console.log(resp)
-                    that.tableData = resp.data.content
+                let user = sessionStorage.getItem("username");
+                this.$axios.get('http://localhost:8181/Question/findByQuestioner/' +user+'/'+ (currentPage - 1) + '/10').then(function (resp) {
+                    that.tableData = resp.data.list
                     that.pageSize = resp.data.size
-                    that.total = resp.data.totalElements
+                    that.total = resp.data.total
                 })
             }
         },
@@ -88,11 +88,12 @@
         created() {
             const that = this;
             let user = sessionStorage.getItem("username");
-            this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/10').then(function (resp) {
+            this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/1').then(function (resp) {
                 console.log(resp)
-                that.tableData = resp.data.content
-                that.pageSize = resp.data.size
-                that.total = resp.data.totalElements
+                console.log(resp.data.list);
+                that.tableData = resp.data.list;
+                that.pageSize = resp.data.size;
+                that.total = resp.data.total;
             })
         }
     }
