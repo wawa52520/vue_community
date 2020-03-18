@@ -9,6 +9,7 @@ import UpdateQuestion from "../views/UpdateQuestion"
 import Login from "../views/Login"
 import Info from "../views/info"
 import ViewQuestion from "../views/ViewQuestion"
+import Register from "../views/register"
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,7 @@ const routes = [
         path: '/',
         name: "学生主界面",
         component: Index,
-        redirect:"/FindQuestion",
+        redirect:"/Login",
         show:true,
         children: [{
             path: '/FindQuestion',
@@ -28,18 +29,30 @@ const routes = [
             name: "提问",
             component: AddQuestion,
         }, {
-            path: '/MyQuestion',
-            name: "我的提问",
-            component: MyQuestion,
-        }, {
-            path:'/info',
-            name:"我的信息",
-            component:Info
-        },{
             path: '/pageFour',
             name: "退出系统",
             component: PageFour,
         }
+        ]
+    }
+    ,
+    {
+        path:'/info',
+        name:"我的信息",
+        component:Index,
+        show:true,
+        redirect:'/info',
+        children:[
+            {
+                path: '/MyQuestion',
+                name: "我的提问",
+                component: MyQuestion,
+            },
+            {
+                path:'/info',
+                name:"修改密码",
+                component:Info,
+            }
         ]
     }
     ,
@@ -61,6 +74,10 @@ const routes = [
         path:'/login',
         component:Login
     },
+    {
+        path:'/register',
+        component:Register
+    }
 
 ]
 

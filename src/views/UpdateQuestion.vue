@@ -2,7 +2,7 @@
      <!--    model对应v-model,rules对应prop-->
      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="问题ID">
-               <el-input v-model="ruleForm.id" readOnly></el-input>
+               <el-input v-model="ruleForm.id" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="问题标题" prop="title">
                <el-input v-model="ruleForm.title"></el-input>
@@ -68,12 +68,11 @@
                          if (valid) {
                               this.$axios.post('http://localhost:8181/Question/update',this.ruleForm).then(function (resp) {
                                    if (resp.data == 'success') {
-                                        that.$alert('修改成功!', '消息'), {
-                                             confirmButtonText: '确定',
-                                             callback: action => {
-                                                  that.$router.push('/FindQuestion')
-                                             }
-                                        }
+                                        that.$message({
+                                             message: '修改成功！',
+                                             type: 'success'
+                                        });
+                                        that.$router.push('/MyQuestion')
                                    } else {
                                         that.$alert('提问失败,请完善问题!')
                                         that.$router.push('/AddQuestion')

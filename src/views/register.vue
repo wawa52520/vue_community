@@ -1,20 +1,25 @@
 <template>
     <div class="container">
         <div class="box">
-            <h1>登录</h1>
+            <h1>注册</h1>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                      class="demo-ruleForm">
-                <el-form-item label="用户名" prop="user" style="width: 400px;" class="user">
-                    <el-input type="input" v-model="ruleForm.user" autocomplete="off"></el-input>
+                <el-form-item label="用户名" prop="name" style="width: 400px;" class="user">
+                    <el-input type="input" v-model="ruleForm.name" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="pass" style="width: 400px;" class="pwd">
-                    <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+                <el-form-item label="密码" prop="password">
+                    <el-input type="password" v-model="ruleForm.password" autocomplete="off"
+                              style="width: 300px" show-password></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="checkPass">
+                    <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"
+                              style="width: 300px" show-password></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')" style="width: 145px">登录</el-button>
-                    <el-button @click="register" style="width:145px;">注册</el-button>
-
+                    <el-button type="primary" @click="submitForm('ruleForm')" style="width: 145px">注册</el-button>
+                    <el-button @click="resetForm('ruleForm')" style="width:145px;">重置</el-button>
                 </el-form-item>
+                <el-link type="info" style="float: right" href="/">已有账号，直接登陆></el-link>
             </el-form>
         </div>
     </div>
@@ -23,7 +28,6 @@
 <script>
     export default {
         data() {
-
 
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
@@ -35,12 +39,21 @@
                     callback();
                 }
             };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
 
             var checkUser = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入用户名'));
                 } else {
-                    if (this.ruleForm.user !== '') {
+                    if (this.ruleForm.name !== '') {
                         this.$refs.ruleForm.validateField('checkPass');
                     }
                     callback();
@@ -48,46 +61,43 @@
             }
             return {
                 ruleForm: {
-                    user: '',
-                    pass: '',
+                    name: '',
+                    password: '',
+                    checkPass: '',
                 },
                 rules: {
-                    user: [
+                    name: [
                         {validator: checkUser, trigger: 'blur'}
                     ],
-                    pass: [
+                    password: [
                         {validator: validatePass, trigger: 'blur'}
+                    ],
+                    checkPass: [
+                        {validator: validatePass2, trigger: 'blur'}
                     ]
                 }
             };
         },
         methods: {
             submitForm(formName) {
-                const username = this.ruleForm.user;
-                const password = this.ruleForm.pass;
-                const that = this;
+                const that=this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log('submit!');
-                        //表单提交的user和pass
-                        // console.log(this.ruleForm.user)
-                        // console.log(this.ruleForm.pass)
-                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass).then(function (resp) {
+
+                        this.$axios.post('http://localhost:8181/Login/register',this.ruleForm).then(function (resp) {
                             console.log(resp);
-                            // console.log(username)
-                            // console.log(password)
-                            if (resp.data.length != 0) {
+                            if (resp.data=='success'){
+                                alert('注册成功!');
+                                that.$router.push("/Login");
                                 that.$message({
                                     type: 'success',
-                                    message: '登陆成功!'
+                                    message: '注册成功!开始登陆吧！'
                                 });
-                                sessionStorage.setItem("username", username);
-                                sessionStorage.setItem("id",resp.data[0].id);
-                                that.$router.push('/FindQuestion')
-                                // console.log('name:' + resp.data[0].name);
-                                // console.log('pass:' + resp.data[0].password);
-                            } else {
-                                alert('用户名或密码错误！！！')
+                            }else {
+                                that.$message({
+                                    type: 'error',
+                                    message: '注册失败!该用户名已存在！',
+                                });
                             }
                         })
                     } else {
@@ -96,11 +106,10 @@
                     }
                 });
             },
-            register(){
-                this.$router.push("/register")
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
-        },
-
+        }
     }
 </script>
 <style scoped>
@@ -117,7 +126,7 @@
         top: 0;
         left: 0;
         overflow-y: auto;
-        background-image: url("../assets/1.jpg");
+        background-image: url("../assets/2.jpg");
     }
 
     .box {

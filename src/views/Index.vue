@@ -17,9 +17,7 @@
                     <el-dropdown>
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>查看</el-dropdown-item>
-                            <el-dropdown-item>新增</el-dropdown-item>
-                            <el-dropdown-item>删除</el-dropdown-item>
+                            <el-dropdown-item @click.native="exit">退出系统</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <span>{{username}}</span>
@@ -41,6 +39,29 @@
                 username:'',
             }
         },
+        methods:{
+            exit() {
+                const that= this
+                this.$confirm('将退出该系统, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    that.$router.push('/Login')
+                    sessionStorage.clear()
+                    this.$message({
+                        type: 'success',
+                        message: '退出成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消退出'
+                    });
+                });
+            }
+        }
+        ,
         created() {
            this.username= sessionStorage.getItem('username');
         }

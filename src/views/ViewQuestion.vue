@@ -1,9 +1,28 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
     <div>
         <el-container>
-            <el-header>{{answerData.title}}</el-header>
-            <el-main style="height: 750px">{{answerData.description}}
-                <span>回复老师:{{answerData.teacherTag}}</span></el-main>
+            <el-header>问题标题：{{answerData.title}}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;提问者：{{answerData.questioner}}
+            </el-header>
+            <el-main style="height: 750px;text-align: left" >
+                <span>问题描述：</span>
+                <el-input
+                        type="textarea"
+                        :rows="8"
+                        placeholder="请输入内容"
+                        v-model=answerData.description
+                        readonly=true
+                >
+                </el-input>
+                <span>老师回复：</span>
+                <el-input
+                        type="textarea"
+                        :rows="8"
+                        placeholder="请输入内容"
+                        v-model=answerData.questioner
+                        readonly=true
+                >
+                </el-input>
+            </el-main>
 
         </el-container>
     </div>
@@ -17,7 +36,8 @@
                     title: '',
                     description: '',
                     answer: '',
-                    teacherTag: ''
+                    teacherTag: '',
+                    questioner:''
                 }
             }
         },

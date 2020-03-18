@@ -28,8 +28,8 @@
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
-                    <el-button @click="edit(scope.row)" type="text" size="small">修改</el-button>
-                    <el-button type="text" size="small" @click="deleteQuestion(scope.row)">删除</el-button>
+                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit">修改</el-button>
+                    <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

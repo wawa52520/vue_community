@@ -26,7 +26,7 @@
             <!--            roleForm映射ref-->
             <el-button type="primary" @click="submitForm('ruleForm')">提问</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
-                        <el-button @click="test()">test</el-button>
+
         </el-form-item>
     </el-form>
 </template>
@@ -38,7 +38,8 @@
                     title: '',
                     tag: '',
                     teacherTag:'',
-                    description: ''
+                    description: '',
+                    questioner:''
                 },
                 rules: {
                     title: [
@@ -58,25 +59,25 @@
             };
         },
         methods: {
-            test() {
-                console.log(this.ruleForm)
-            },
+            // test() {
+            //     console.log(this.ruleForm)
+            // },
 
             submitForm(formName) {
                 const that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$axios.post('http://localhost:8181/Question/save', this.ruleForm).then(function (resp) {
+                            console.log(resp.data)
                             if (resp.data == 'success') {
-                                that.$alert('提问成功!', '消息'), {
-                                    confirmButtonText: '确定',
-                                    callback: action => {
-                                        that.$router.push('/FindQuestion')
-                                    }
-                                }
+                                that.$message({
+                                    message: '提问成功！',
+                                    type: 'success'
+                                });
+                                that.$router.push('/FindQuestion')
                             } else {
                                 that.$alert('提问失败,请完善问题!')
-                                that.$router.push('/AddQuestion')
+                                that.$router.push('/FindQuestion')
                             }
                         })
 
@@ -89,6 +90,9 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             }
+        },
+        created() {
+                this.ruleForm.questioner=sessionStorage.getItem('username');
         }
     }
 </script>
