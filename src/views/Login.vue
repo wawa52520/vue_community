@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <h1 style="margin-left:40%;color: white;" >面向高校师生的课后答疑系统</h1>
         <div class="box">
             <h1>登录</h1>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
@@ -10,10 +11,17 @@
                 <el-form-item label="密码" prop="pass" style="width: 400px;" class="pwd">
                     <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="登录方式" prop="type">
+                    <el-radio-group v-model="ruleForm.type">
+                        <el-radio label="学生"></el-radio>
+                        <el-radio label="老师"></el-radio>
+                        <el-radio label="管理员"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')" style="width: 145px">登录</el-button>
                     <el-button @click="register" style="width:145px;">注册</el-button>
-
+<!--                    <el-button @click="testBtn" style="width:145px;">测试</el-button>-->
                 </el-form-item>
             </el-form>
         </div>
@@ -50,6 +58,7 @@
                 ruleForm: {
                     user: '',
                     pass: '',
+                    type: '',
                 },
                 rules: {
                     user: [
@@ -57,6 +66,9 @@
                     ],
                     pass: [
                         {validator: validatePass, trigger: 'blur'}
+                    ],
+                    type: [
+                        {required: true, message: '请选择登录方式', trigger: 'change'}
                     ]
                 }
             };
@@ -82,7 +94,7 @@
                                     message: '登陆成功!'
                                 });
                                 sessionStorage.setItem("username", username);
-                                sessionStorage.setItem("id",resp.data[0].id);
+                                sessionStorage.setItem("id", resp.data[0].id);
                                 that.$router.push('/FindQuestion')
                                 // console.log('name:' + resp.data[0].name);
                                 // console.log('pass:' + resp.data[0].password);
@@ -96,8 +108,11 @@
                     }
                 });
             },
-            register(){
+            register() {
                 this.$router.push("/register")
+            },
+            testBtn(){
+                console.log(this.ruleForm);
             }
         },
 

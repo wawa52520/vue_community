@@ -89,10 +89,6 @@
                             if (resp.data=='success'){
                                 alert('注册成功!');
                                 that.$router.push("/Login");
-                                that.$message({
-                                    type: 'success',
-                                    message: '注册成功!开始登陆吧！'
-                                });
                             }else {
                                 that.$message({
                                     type: 'error',
