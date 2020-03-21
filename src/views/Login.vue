@@ -84,11 +84,11 @@
                         //表单提交的user和pass
                         // console.log(this.ruleForm.user)
                         // console.log(this.ruleForm.pass)
-                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass).then(function (resp) {
-                            console.log(resp);
+                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass+'/'+this.ruleForm.type).then(function (resp) {
+                            console.log(resp.data[0]);
                             // console.log(username)
                             // console.log(password)
-                            if (resp.data.length != 0) {
+                            if (resp.data.length!= 0) {
                                 that.$message({
                                     type: 'success',
                                     message: '登陆成功!'
@@ -99,7 +99,10 @@
                                 // console.log('name:' + resp.data[0].name);
                                 // console.log('pass:' + resp.data[0].password);
                             } else {
-                                alert('用户名或密码错误！！！')
+                                that.$message({
+                                    type: 'error',
+                                    message: '登陆失败,请检查用户名密码或登录方式!'
+                                });
                             }
                         })
                     } else {

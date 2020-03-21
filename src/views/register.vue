@@ -87,7 +87,7 @@
                         this.$axios.post('http://localhost:8181/Login/register',this.ruleForm).then(function (resp) {
                             console.log(resp);
                             if (resp.data=='success'){
-                                alert('注册成功!');
+                                alert('注册成功!开始登录吧！');
                                 that.$router.push("/Login");
                             }else {
                                 that.$message({
