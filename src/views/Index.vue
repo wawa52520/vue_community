@@ -6,7 +6,7 @@
                     <el-submenu v-for="(item,index) in $router.options.routes" :index="index+''" v-if="item.show">
                         <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
                         <el-menu-item v-for="(item2,index2) in item.children" :index="item2.path"
-                                      :class="$route.path==item2.path?'is-active':''">{{item2.name}}
+                                      :class="$route.path==item2.path?'is-active':''" v-show="item2.power.includes(UserPower)">{{item2.name}}
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
@@ -14,19 +14,17 @@
 
             <el-container>
                 <el-header style="text-align: right; font-size: 12px">
+                    <span>欢迎您，{{username}}</span>
                     <el-dropdown>
                         <i class="el-icon-setting" style="margin-right: 15px"></i>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item @click.native="exit">退出系统</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                    <span>{{username}}</span>
                 </el-header>
-
                 <el-main>
                     <router-view></router-view>
                 </el-main>
-
             </el-container>
         </el-container>
     </div>
@@ -37,6 +35,7 @@
         data() {
             return {
                 username:'',
+                UserPower:sessionStorage.getItem('power')
             }
         },
         methods:{

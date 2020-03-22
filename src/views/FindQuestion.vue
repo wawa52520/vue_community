@@ -29,7 +29,7 @@
                     width=200>
                 <template slot-scope="scope">
                     <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view" >查看</el-button>
-                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit" v-if="UserPower=='管理员'" >修改</el-button>
+                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit" v-if="UserPower=='管理员'||UserPower=='教师'" >修改</el-button>
                     <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete" v-if="UserPower=='管理员'">删除</el-button>
                 </template>
             </el-table-column>
