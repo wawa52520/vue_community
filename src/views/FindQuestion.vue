@@ -28,9 +28,9 @@
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
-                    <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view">查看</el-button>
-                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit">修改</el-button>
-                    <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete">删除</el-button>
+                    <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view" >查看</el-button>
+                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit" v-if="UserPower=='管理员'" >修改</el-button>
+                    <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete" v-if="UserPower=='管理员'">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -90,16 +90,17 @@
                 pageSize: '',
                 total: '',
                 tableData: [{}],
+                UserPower:sessionStorage.getItem("power")
             }
         },
         //分页
         created() {
-            const that = this
+            const that = this;
             this.$axios.get('http://localhost:8181/Question/findAll/0/10').then(function (resp) {
-                that.tableData = resp.data.content
-                that.pageSize = resp.data.size
-                that.total = resp.data.totalElements
-            })
+                that.tableData = resp.data.content;
+                that.pageSize = resp.data.size;
+                that.total = resp.data.totalElements;
+            });
         }
     }
 </script>

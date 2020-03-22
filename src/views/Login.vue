@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 style="margin-left:40%;color: white;" >面向高校师生的课后答疑系统</h1>
+        <h1 style="margin-left:40%;color: white;">面向高校师生的课后答疑系统</h1>
         <div class="box">
             <h1>登录</h1>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
@@ -14,14 +14,14 @@
                 <el-form-item label="登录方式" prop="type">
                     <el-radio-group v-model="ruleForm.type">
                         <el-radio label="学生"></el-radio>
-                        <el-radio label="老师"></el-radio>
+                        <el-radio label="教师"></el-radio>
                         <el-radio label="管理员"></el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')" style="width: 145px">登录</el-button>
                     <el-button @click="register" style="width:145px;">注册</el-button>
-<!--                    <el-button @click="testBtn" style="width:145px;">测试</el-button>-->
+                    <!--                    <el-button @click="testBtn" style="width:145px;">测试</el-button>-->
                 </el-form-item>
             </el-form>
         </div>
@@ -81,23 +81,34 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log('submit!');
-                        //表单提交的user和pass
-                        // console.log(this.ruleForm.user)
-                        // console.log(this.ruleForm.pass)
-                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass+'/'+this.ruleForm.type).then(function (resp) {
-                            console.log(resp.data[0]);
-                            // console.log(username)
-                            // console.log(password)
-                            if (resp.data.length!= 0) {
+                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass + '/' + this.ruleForm.type).then(function (resp) {
+                            if (resp.data.length != 0 && that.ruleForm.type == '学生') {
                                 that.$message({
                                     type: 'success',
                                     message: '登陆成功!'
                                 });
                                 sessionStorage.setItem("username", username);
                                 sessionStorage.setItem("id", resp.data[0].id);
-                                that.$router.push('/FindQuestion')
-                                // console.log('name:' + resp.data[0].name);
-                                // console.log('pass:' + resp.data[0].password);
+                                sessionStorage.setItem("power", resp.data[0].power);
+                                that.$router.push('/FindQuestion');
+                            } else if (resp.data.length != 0 && that.ruleForm.type == '教师') {
+                                that.$message({
+                                    type: 'success',
+                                    message: '登陆成功!'
+                                });
+                                sessionStorage.setItem("username", username);
+                                sessionStorage.setItem("id", resp.data[0].id);
+                                sessionStorage.setItem("power", resp.data[0].power);
+                                that.$router.push('/FindQuestion');
+                            } else if (resp.data.length != 0 && that.ruleForm.type == '管理员') {
+                                that.$message({
+                                    type: 'success',
+                                    message: '登陆成功!'
+                                });
+                                sessionStorage.setItem("username", username);
+                                sessionStorage.setItem("id", resp.data[0].id);
+                                sessionStorage.setItem("power", resp.data[0].power);
+                                that.$router.push('/FindQuestion');
                             } else {
                                 that.$message({
                                     type: 'error',
@@ -114,7 +125,7 @@
             register() {
                 this.$router.push("/register")
             },
-            testBtn(){
+            testBtn() {
                 console.log(this.ruleForm);
             }
         },
