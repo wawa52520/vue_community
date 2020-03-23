@@ -90,7 +90,7 @@
                                 sessionStorage.setItem("username", username);
                                 sessionStorage.setItem("id", resp.data[0].id);
                                 sessionStorage.setItem("power", resp.data[0].power);
-                                that.$router.push('/FindQuestion');
+                                that.$router.push('/SearchQuestion');
                             } else if (resp.data.length != 0 && that.ruleForm.type == '教师') {
                                 that.$message({
                                     type: 'success',

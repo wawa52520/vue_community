@@ -1,10 +1,10 @@
 <template>
-    <h1>这是页面4</h1>
+    <h1>search</h1>
 </template>
 
 <script>
     export default {
-        name: "PageFour"
+        name: "SearchQuestion"
     }
 </script>
 

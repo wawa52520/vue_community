@@ -28,9 +28,8 @@
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
-                    <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view" >查看</el-button>
-                    <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit" v-if="UserPower=='管理员'" >修改</el-button>
-                    <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete" v-if="UserPower=='管理员'">删除</el-button>
+                    <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view">查看</el-button>
+                    <el-button @click="replyQuestion(scope.row)" type="text" icon="el-icon-edit">回复</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -48,21 +47,12 @@
     export default {
         methods: {
             //row 从节点拿到的属性
-            edit(row) {
+            replyQuestion(row) {
+                console.log(row);
                 this.$router.push({
-                    path: '/updateQuestion',
+                    path: '/ReplyQuestion',
                     query: {
                         id: row.id
-                    }
-                })
-
-                //row.id
-            },
-            //删除问题按钮方法
-            deleteQuestion(row) {
-                this.$axios.delete('http://localhost:8181/Question/deleteById/' + row.id).then(function (resp) {
-                    if (resp.status == 200) {
-                        window.location.reload()
                     }
                 })
             }
@@ -78,7 +68,7 @@
             ,
             page(currentPage) {
                 const that = this
-                this.$axios.get('http://localhost:8181/Question/findAll/' + (currentPage - 1) + '/10').then(function (resp) {
+                this.$axios.get('http://localhost:8181/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/' + (currentPage - 1) + '/5').then(function (resp) {
                     that.tableData = resp.data.content;
                     that.pageSize = resp.data.size;
                     that.total = resp.data.totalElements
@@ -90,13 +80,14 @@
                 pageSize: '',
                 total: '',
                 tableData: [{}],
-                UserPower:sessionStorage.getItem("power")
+                UserPower: sessionStorage.getItem("power")
             }
         },
         //分页
         created() {
             const that = this;
-            this.$axios.get('http://localhost:8181/Question/findAll/0/10').then(function (resp) {
+            this.$axios.get('http://localhost:8181/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/0/5').then(function (resp) {
+                console.log(resp);
                 that.tableData = resp.data.content;
                 that.pageSize = resp.data.size;
                 that.total = resp.data.totalElements;

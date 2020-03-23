@@ -3,13 +3,16 @@ import VueRouter from 'vue-router'
 import FindQuestion from '../views/FindQuestion'
 import AddQuestion from '../views/AddQuestion'
 import MyQuestion from '../views/MyQuestion'
-import PageFour from '../views/PageFour'
 import Index from "../views/Index"
 import UpdateQuestion from "../views/UpdateQuestion"
 import Login from "../views/Login"
 import Info from "../views/info"
 import ViewQuestion from "../views/ViewQuestion"
 import Register from "../views/register"
+import SearchQuestion from "../views/SearchQuestion"
+import TeacherAnswer from "../views/TeacherAnswer"
+import WatiForReply from "../views/WaitForReply"
+import ReplyQuestion from "../views/ReplyQuestion"
 
 Vue.use(VueRouter)
 
@@ -27,15 +30,16 @@ const routes = [
             component: FindQuestion,
             power:['教师','管理员']
         }, {
+            path:'/SearchQuestion',
+            name:"搜索问题",
+            component:SearchQuestion,
+            power:['学生']
+        },
+            {
             path: '/AddQuestion',
             name: "提问",
             component: AddQuestion,
             power:['学生']
-        }, {
-            path: '/pageFour',
-            name: "退出系统",
-            component: PageFour,
-            power:['学生','教师','管理员']
         }
         ]
     }
@@ -52,14 +56,26 @@ const routes = [
                 path: '/MyQuestion',
                 name: "我的提问",
                 component: MyQuestion,
-                power:['学生','教师','管理员']
+                power:['学生']
+            },{
+                path: '/WaitForReply',
+                name: "待回复问题",
+                component: WatiForReply,
+                power:['教师']
+            },{
+                path:'/TeacherAnswer',
+                name:'我的回复',
+                component:TeacherAnswer,
+                power:['教师']
             },
+
             {
                 path: '/info',
                 name: "修改密码",
                 component: Info,
                 power:['学生','教师','管理员']
             }
+
         ]
     }
     ,
@@ -75,7 +91,13 @@ const routes = [
             path: '/viewQuestion',
             name: '更新问题',
             component: ViewQuestion,
-        }]
+        },{
+            path: '/ReplyQuestion',
+            name: '回复问题',
+            component: ReplyQuestion,
+        }
+
+        ]
     },
     {
         path: '/login',

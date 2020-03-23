@@ -74,10 +74,10 @@
                                     message: '提问成功！',
                                     type: 'success'
                                 });
-                                that.$router.push('/FindQuestion')
+                                that.$router.push('/MyQuestion')
                             } else {
                                 that.$alert('提问失败,请完善问题!')
-                                that.$router.push('/FindQuestion')
+                                that.$router.push('/MyQuestion')
                             }
                         })
 

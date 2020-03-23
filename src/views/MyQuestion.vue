@@ -25,6 +25,11 @@
                     width="300">
             </el-table-column>
             <el-table-column
+                    prop="replied"
+                    label="是否回复"
+                    width="150">
+            </el-table-column>
+            <el-table-column
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
@@ -71,9 +76,9 @@
                 const that = this
                 let user = sessionStorage.getItem("username");
                 this.$axios.get('http://localhost:8181/Question/findByQuestioner/' +user+'/'+ (currentPage - 1) + '/10').then(function (resp) {
-                    that.tableData = resp.data.list
-                    that.pageSize = resp.data.size
-                    that.total = resp.data.total
+                    that.tableData = resp.data.content;
+                    that.pageSize = resp.data.size;
+                    that.total = resp.data.totalElements;
                 })
             }
         },
@@ -88,12 +93,12 @@
         created() {
             const that = this;
             let user = sessionStorage.getItem("username");
-            this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/1').then(function (resp) {
+            this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/10').then(function (resp) {
                 console.log(resp)
                 console.log(resp.data.list);
-                that.tableData = resp.data.list;
+                that.tableData = resp.data.content;
                 that.pageSize = resp.data.size;
-                that.total = resp.data.total;
+                that.total = resp.data.totalElements;
             })
         }
     }
