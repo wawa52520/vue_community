@@ -63,7 +63,7 @@
           },
           methods: {
                submitForm(formName) {
-                    const that = this
+                    const that = this;
                     this.$refs[formName].validate((valid) => {
                          if (valid) {
                               this.$axios.post('http://localhost:8181/Question/update',this.ruleForm).then(function (resp) {

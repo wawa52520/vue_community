@@ -18,10 +18,10 @@
                         type="textarea"
                         :rows="8"
                         placeholder="请输入内容"
-                        v-model=answerData.questioner
-                        readonly=true
+                        v-model=answerData.answer
                 >
                 </el-input>
+                <el-button type="primary" icon="el-icon-upload" style="float: right" @click="reply()">回复</el-button>
             </el-main>
 
         </el-container>
@@ -37,8 +37,28 @@
                     description: '',
                     answer: '',
                     teacherTag: '',
-                    questioner:''
+                    questioner:'',
+                    id:this.$route.query.id
+                },
+                TeacherAnswer:{
+                    answer:'',
+                    id:this.$route.query.id
                 }
+            }
+        },
+        methods:{
+            reply(){
+                const that=this;
+                // console.log(this.TeacherAnswer);
+                this.$axios.post('http://localhost:8181/Question/answerQuestion',this.answerData).then(function (resp) {
+                    if (resp.data=='success'){
+                        that.$message({
+                            type: 'success',
+                            message: '回复成功!'
+                        });
+                        that.$router.push('/WaitForReply')
+                    }
+                })
             }
         },
         created() {

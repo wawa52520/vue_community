@@ -25,6 +25,11 @@
                     width="300">
             </el-table-column>
             <el-table-column
+                    prop="replied"
+                    label="是否回复"
+                    width="150">
+            </el-table-column>
+            <el-table-column
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
