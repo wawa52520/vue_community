@@ -18,7 +18,7 @@
                         type="textarea"
                         :rows="8"
                         placeholder="请输入内容"
-                        v-model=answerData.questioner
+                        v-model=answerData.answer
                         readonly=true
                 >
                 </el-input>
@@ -37,7 +37,7 @@
                     description: '',
                     answer: '',
                     teacherTag: '',
-                    questioner:''
+                    questioner:'',
                 }
             }
         },

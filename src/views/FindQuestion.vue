@@ -25,6 +25,11 @@
                     width="300">
             </el-table-column>
             <el-table-column
+                    prop="teacherTag"
+                    label="教师标签"
+                    width="100">
+            </el-table-column>
+            <el-table-column
                     prop="replied"
                     label="是否回复"
                     width="150">
@@ -105,6 +110,7 @@
                 that.tableData = resp.data.content;
                 that.pageSize = resp.data.size;
                 that.total = resp.data.totalElements;
+                console.log(resp.data)
             });
         }
     }

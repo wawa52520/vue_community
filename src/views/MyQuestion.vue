@@ -33,6 +33,7 @@
                     label="操作"
                     width=200>
                 <template slot-scope="scope">
+                    <el-button @click="viewQuestion(scope.row)" type="text" icon="el-icon-view" >查看</el-button>
                     <el-button @click="edit(scope.row)" type="text" size="small" icon="el-icon-edit">修改</el-button>
                     <el-button type="text" size="small" @click="deleteQuestion(scope.row)" icon="el-icon-delete">删除</el-button>
                 </template>
@@ -61,6 +62,13 @@
                 })
 
                 //row.id
+            }, viewQuestion(row) {
+                this.$router.push({
+                    path: '/ViewQuestion',
+                    query: {
+                        id: row.id
+                    }
+                })
             },
             //删除问题按钮方法
             deleteQuestion(row){
@@ -73,7 +81,7 @@
             // findByQuestioner/root
             ,
             page(currentPage) {
-                const that = this
+                const that = this;
                 let user = sessionStorage.getItem("username");
                 this.$axios.get('http://localhost:8181/Question/findByQuestioner/' +user+'/'+ (currentPage - 1) + '/10').then(function (resp) {
                     that.tableData = resp.data.content;
@@ -94,7 +102,7 @@
             const that = this;
             let user = sessionStorage.getItem("username");
             this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/10').then(function (resp) {
-                console.log(resp)
+                console.log(resp);
                 console.log(resp.data.list);
                 that.tableData = resp.data.content;
                 that.pageSize = resp.data.size;
