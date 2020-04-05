@@ -1,6 +1,9 @@
 <template>
     <!--    model对应v-model,rules对应prop-->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="问题ID">
+            <el-input v-model="ruleForm.id" :disabled="true"></el-input>
+        </el-form-item>
         <el-form-item label="问题标题" prop="title">
             <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
@@ -24,9 +27,9 @@
         </el-form-item>
         <el-form-item>
             <!--            roleForm映射ref-->
-            <el-button type="primary" @click="submitForm('ruleForm')">提问</el-button>
+            <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
-
+            <!--            <el-button @click="test()">test</el-button>-->
         </el-form-item>
     </el-form>
 </template>
@@ -37,11 +40,11 @@
         data() {
             return {
                 ruleForm: {
+                    id:'',
                     title: '',
                     tag: '',
-                    teacherTag:'',
                     description: '',
-                    questioner:''
+                    teacherTag:''
                 },
                 rules: {
                     title: [
@@ -61,30 +64,28 @@
             };
         },
         methods: {
-            // test() {
-            //     console.log(this.ruleForm)
-            // },
-
             submitForm(formName) {
                 const that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$axios.post(apiUrl+'/Question/save', this.ruleForm).then(function (resp) {
-                            console.log(resp.data)
+                        this.$axios.post(apiUrl+'/Question/update',this.ruleForm).then(function (resp) {
                             if (resp.data == 'success') {
                                 that.$message({
-                                    message: '提问成功！',
+                                    message: '修改成功！',
                                     type: 'success'
                                 });
-                                that.$router.push('/MyQuestion')
+                                that.$router.push('/FindQuestion')
                             } else {
-                                that.$alert('提问失败,请完善问题!')
-                                that.$router.push('/MyQuestion')
+                                that.$alert('修改失败,请完善问题!')
+                                that.$router.push('/FindQuestion')
                             }
                         })
 
                     } else {
-                        console.log('提问失败，请重新提问!!');
+                        that.$message({
+                            message: '修改失败！',
+                            type: 'error'
+                        });
                         return false;
                     }
                 });
@@ -94,7 +95,11 @@
             }
         },
         created() {
-                this.ruleForm.questioner=sessionStorage.getItem('username');
+            //通过route拿参数（id）
+            const that = this;
+            this.$axios.get(apiUrl+'/Question/findById/'+this.$route.query.id).then(function (resp) {
+                that.ruleForm=resp.data;
+            })
         }
     }
 </script>

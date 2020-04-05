@@ -19,13 +19,15 @@
                     <el-button type="primary" @click="submitForm('ruleForm')" style="width: 145px">注册</el-button>
                     <el-button @click="resetForm('ruleForm')" style="width:145px;">重置</el-button>
                 </el-form-item>
-                <el-link type="info" style="float: right" href="/">已有账号，直接登陆></el-link>
+                <el-link type="info" style="float: right" @click="moveToIndex">已有账号，直接登陆></el-link>
             </el-form>
         </div>
     </div>
 </template>
 
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         data() {
 
@@ -58,7 +60,7 @@
                     }
                     callback();
                 }
-            }
+            };
             return {
                 ruleForm: {
                     name: '',
@@ -84,11 +86,14 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
 
-                        this.$axios.post('http://localhost:8181/Login/register',this.ruleForm).then(function (resp) {
+                        this.$axios.post(apiUrl+'/Login/register',this.ruleForm).then(function (resp) {
                             console.log(resp);
                             if (resp.data=='success'){
-                                alert('注册成功!开始登录吧！');
                                 that.$router.push("/Login");
+                                that.$message({
+                                    type: 'success',
+                                    message: '注册成功!开始登陆吧！'
+                                });
                             }else {
                                 that.$message({
                                     type: 'error',
@@ -104,6 +109,10 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            moveToIndex(){
+                const that=this;
+                that.$router.push("/Login")
             }
         }
     }

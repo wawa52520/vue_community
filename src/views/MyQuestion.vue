@@ -50,6 +50,8 @@
     </div>
 </template>
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         methods: {
             //row 从节点拿到的属性
@@ -72,18 +74,35 @@
             },
             //删除问题按钮方法
             deleteQuestion(row){
-                this.$axios.delete('http://localhost:8181/Question/deleteById/'+row.id).then(function (resp) {
-                    if (resp.status==200){
-                        window.location.reload()
-                    }
-                })
+                const that=this;
+                this.$confirm('此操作将永久删除该问题, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$axios.delete(apiUrl+'/Question/deleteById/'+row.id).then(function (resp) {
+                        if (resp.status==200){
+                            that.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            setInterval('window.location.reload()',1000);
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
             }
             // findByQuestioner/root
             ,
             page(currentPage) {
                 const that = this;
                 let user = sessionStorage.getItem("username");
-                this.$axios.get('http://localhost:8181/Question/findByQuestioner/' +user+'/'+ (currentPage - 1) + '/10').then(function (resp) {
+                this.$axios.get(apiUrl+'/Question/findByQuestioner/' +user+'/'+ (currentPage - 1) + '/10').then(function (resp) {
                     that.tableData = resp.data.content;
                     that.pageSize = resp.data.size;
                     that.total = resp.data.totalElements;
@@ -101,7 +120,7 @@
         created() {
             const that = this;
             let user = sessionStorage.getItem("username");
-            this.$axios.get('http://localhost:8181/Question/findByQuestioner/'+user+'/0/10').then(function (resp) {
+            this.$axios.get(apiUrl+'/Question/findByQuestioner/'+user+'/0/10').then(function (resp) {
                 console.log(resp);
                 console.log(resp.data.list);
                 that.tableData = resp.data.content;

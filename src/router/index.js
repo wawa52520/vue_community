@@ -13,7 +13,9 @@ import SearchQuestion from "../views/SearchQuestion"
 import TeacherAnswer from "../views/TeacherAnswer"
 import WatiForReply from "../views/WaitForReply"
 import ReplyQuestion from "../views/ReplyQuestion"
-
+import UserManage from "../views/UserManage"
+import EditUser from  "../views/EditUser"
+import AdminUpdateQuestion from "../views/AdminUpdateQuestion"
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,10 +28,16 @@ const routes = [
         power:['学生','教师','管理员'],
         children: [{
             path: '/FindQuestion',
-            name: "查询问题",
+            name: "问题管理",
             component: FindQuestion,
             power:['教师','管理员']
         }, {
+            path: '/UserManage',
+            name: "用户管理",
+            component: UserManage,
+            power:['管理员']
+        },
+            {
             path:'/SearchQuestion',
             name:"搜索问题",
             component:SearchQuestion,
@@ -95,8 +103,15 @@ const routes = [
             path: '/ReplyQuestion',
             name: '回复问题',
             component: ReplyQuestion,
+        },{
+            path:'/EditUser',
+            name:'修改用户',
+            component:EditUser
+        },{
+            path:'/AdminUpdateQuestion',
+            name:'修改用户问题',
+            component:AdminUpdateQuestion
         }
-
         ]
     },
     {
@@ -111,7 +126,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes
 })

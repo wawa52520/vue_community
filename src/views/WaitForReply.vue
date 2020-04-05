@@ -49,6 +49,8 @@
     </div>
 </template>
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         methods: {
             //row 从节点拿到的属性
@@ -73,10 +75,10 @@
             ,
             page(currentPage) {
                 const that = this
-                this.$axios.get('http://localhost:8181/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/否/' + (currentPage - 1) + '/5').then(function (resp) {
+                this.$axios.get(apiUrl+'/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/否/' + (currentPage - 1) + '/5').then(function (resp) {
                     that.tableData = resp.data.content;
                     that.pageSize = resp.data.size;
-                    that.total = resp.data.totalElements
+                    that.total = resp.data.totalElements;
                 })
             }
         },
@@ -91,7 +93,7 @@
         //分页
         created() {
             const that = this;
-            this.$axios.get('http://localhost:8181/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/否/0/5').then(function (resp) {
+            this.$axios.get(apiUrl+'/Question/teacherAnswer/' + sessionStorage.getItem('username') + '/否/0/5').then(function (resp) {
                 console.log(resp);
                 that.tableData = resp.data.content;
                 that.pageSize = resp.data.size;

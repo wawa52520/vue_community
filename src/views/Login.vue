@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         data() {
 
@@ -81,7 +83,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log('submit!');
-                        this.$axios.get('http://localhost:8181/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass + '/' + this.ruleForm.type).then(function (resp) {
+                        this.$axios.get(apiUrl+'/Login/findByUserAndPassword/' + this.ruleForm.user + '/' + this.ruleForm.pass + '/' + this.ruleForm.type).then(function (resp) {
                             if (resp.data.length != 0 && that.ruleForm.type == '学生') {
                                 that.$message({
                                     type: 'success',

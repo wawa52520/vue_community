@@ -15,9 +15,17 @@
             <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" show-password
                       placeholder="请输入密码"></el-input>
         </el-form-item>
+        <el-form-item label="权限">
+            <el-select v-model="ruleForm.power" placeholder="请选择用户权限">
+                <el-option label="学生" value="学生"></el-option>
+                <el-option label="教师" value="教师"></el-option>
+                <el-option label="管理员" value="管理员"></el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
             <el-button @click="resetForm('ruleForm')">重置</el-button>
+
         </el-form-item>
     </el-form>
 </template>
@@ -48,12 +56,15 @@
                 }
             };
             return {
-                input: sessionStorage.username,
-                id: sessionStorage.id,
+                input: '',
                 ruleForm: {
                     password: '',
                     checkPass: '',
-                    id: ''
+                    id: '',
+                    power: '',
+                    name: '',
+                    gmt_create: '',
+                    gmt_modified: ''
                 },
                 rules: {
                     password: [
@@ -67,32 +78,31 @@
             };
         },
         methods: {
+
             submitForm(formName) {
                 const that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$axios.post(apiUrl + '/Login/updatePasswordById', this.ruleForm).then(function (resp) {
-                            if (resp.data == 'success') {
+                        this.$axios.post(apiUrl + '/Login/UpdateUser', this.ruleForm).then(function (resp) {
+                            if (resp.data == "success") {
+                                that.$router.push('/UserManage');
                                 that.$message({
-                                    message: '修改成功！',
-                                    type: 'success'
+                                    type: 'success',
+                                    message: '修改成功！'
                                 });
-                                setInterval('window.location.reload()',1000);
-
-                            }else {
+                            } else {
                                 that.$message({
-                                    message: '修改失败！',
-                                    type: 'error'
+                                    type: 'error',
+                                    message: '修改失败！'
                                 });
                             }
                         })
-
                     } else {
                         that.$message({
-                            message: '修改失败！',
-                            type: 'error'
+                            type: 'error',
+                            message: '修改失败！'
                         });
-                        console.log('error submit!!');
+                        return false;
                     }
                 });
             },
@@ -102,8 +112,18 @@
         },
         created() {
             //从sessionStorage获取用户的Id
-            this.ruleForm.id = parseInt(sessionStorage.getItem("id"));
-
+            const that = this;
+            that.$axios.get(apiUrl + '/Login/findByUserId/' + this.$route.query.id).then(function (resp) {
+                that.input = resp.data.name;
+                that.ruleForm.password = resp.data.password;
+                that.ruleForm.power = resp.data.power;
+                that.ruleForm.id = resp.data.id;
+                that.ruleForm.gmt_create = resp.data.gmt_create;
+                console.log(resp);
+                that.ruleForm.checkPass = that.ruleForm.password;
+                that.ruleForm.gmt_modified = resp.data.gmt_modified;
+                that.ruleForm.name = resp.data.name;
+            })
         }
     }
 </script>

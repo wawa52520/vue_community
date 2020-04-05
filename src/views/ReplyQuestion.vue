@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         data() {
             return {
@@ -50,7 +52,7 @@
             reply(){
                 const that=this;
                 // console.log(this.TeacherAnswer);
-                this.$axios.post('http://localhost:8181/Question/answerQuestion',this.answerData).then(function (resp) {
+                this.$axios.post(apiUrl+'/Question/answerQuestion',this.answerData).then(function (resp) {
                     if (resp.data=='success'){
                         that.$message({
                             type: 'success',
@@ -64,7 +66,7 @@
         created() {
             //通过route拿参数（id）
             const that = this
-            this.$axios.get('http://localhost:8181/Question/findById/' + this.$route.query.id).then(function (resp) {
+            this.$axios.get(apiUrl+'/Question/findById/' + this.$route.query.id).then(function (resp) {
                 that.answerData = resp.data
             })
         }

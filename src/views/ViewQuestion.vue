@@ -17,7 +17,7 @@
                 <el-input
                         type="textarea"
                         :rows="8"
-                        placeholder="请输入内容"
+                        placeholder="等待教师回复..."
                         v-model=answerData.answer
                         readonly=true
                 >
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         data() {
             return {
@@ -43,8 +45,8 @@
         },
         created() {
             //通过route拿参数（id）
-            const that = this
-            this.$axios.get('http://localhost:8181/Question/findById/' + this.$route.query.id).then(function (resp) {
+            const that = this;
+            this.$axios.get(apiUrl+'/Question/findById/' + this.$route.query.id).then(function (resp) {
                 that.answerData = resp.data
             })
         }

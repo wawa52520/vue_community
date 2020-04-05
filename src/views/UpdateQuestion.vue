@@ -34,6 +34,8 @@
      </el-form>
 </template>
 <script>
+     import apiUrl from "../httpConfig/api";
+
      export default {
           data() {
                return {
@@ -66,7 +68,7 @@
                     const that = this;
                     this.$refs[formName].validate((valid) => {
                          if (valid) {
-                              this.$axios.post('http://localhost:8181/Question/update',this.ruleForm).then(function (resp) {
+                              this.$axios.post(apiUrl+'/Question/update',this.ruleForm).then(function (resp) {
                                    if (resp.data == 'success') {
                                         that.$message({
                                              message: '修改成功！',
@@ -80,7 +82,10 @@
                               })
 
                          } else {
-                              console.log('提问失败，请重新提问!!');
+                              that.$message({
+                                   message: '修改失败！',
+                                   type: 'error'
+                              });
                               return false;
                          }
                     });
@@ -91,8 +96,8 @@
           },
           created() {
                //通过route拿参数（id）
-               const that = this
-               this.$axios.get('http://localhost:8181/Question/findById/'+this.$route.query.id).then(function (resp) {
+               const that = this;
+               this.$axios.get(apiUrl+'/Question/findById/'+this.$route.query.id).then(function (resp) {
                     that.ruleForm=resp.data
                })
           }

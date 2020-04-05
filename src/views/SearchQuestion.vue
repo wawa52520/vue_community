@@ -61,6 +61,8 @@
 </template>
 
 <script>
+    import apiUrl from "../httpConfig/api";
+
     export default {
         data() {
             return {
@@ -79,11 +81,22 @@
                     });
                 } else {
                     console.log(this.input);
-                    this.$axios.get('http://localhost:8181/Question/searchQuestion/' + this.input + '/0/10').then(function (resp) {
+                    this.$axios.get(apiUrl + '/Question/searchQuestion/' + this.input + '/0/10').then(function (resp) {
                         console.log(resp);
-                        that.tableData = resp.data.content;
-                        that.pageSize = resp.data.size;
-                        that.total = resp.data.totalElements;
+                        if (resp.data.content.length == 0) {
+                            that.$message({
+                                message: '未搜索到相关内容哦！',
+                                type: 'warning'
+                            });
+                        } else {
+                            that.$message({
+                                message: '搜索到'+resp.data.content.length+'条内容',
+                                type: 'success'
+                            });
+                            that.tableData = resp.data.content;
+                            that.pageSize = resp.data.size;
+                            that.total = resp.data.totalElements;
+                        }
                     })
 
                 }
@@ -91,7 +104,7 @@
             },
             page(currentPage) {
                 const that = this;
-                this.$axios.get('http://localhost:8181/Question/searchQuestion/' + this.input + '/' + (currentPage - 1) + '/10').then(function (resp) {
+                this.$axios.get(apiUrl + '/Question/searchQuestion/' + this.input + '/' + (currentPage - 1) + '/10').then(function (resp) {
                     that.tableData = resp.data.content;
                     that.pageSize = resp.data.size;
                     that.total = resp.data.totalElements;

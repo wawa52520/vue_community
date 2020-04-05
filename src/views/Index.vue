@@ -4,9 +4,12 @@
             <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
                 <el-menu router :default-openeds="['0','1']">
                     <el-submenu v-for="(item,index) in $router.options.routes" :index="index+''" v-if="item.show">
-                        <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
+                        <template slot="title"><i class="el-icon-menu"></i>{{item.name}}</template>
                         <el-menu-item v-for="(item2,index2) in item.children" :index="item2.path"
-                                      :class="$route.path==item2.path?'is-active':''" v-show="item2.power.includes(UserPower)">{{item2.name}}
+                                      :class="$route.path==item2.path?'is-active':''"
+                                      v-show="item2.power.includes(UserPower)"
+                                      class="el-icon-arrow-right"
+                        >{{item2.name}}
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
@@ -34,13 +37,13 @@
     export default {
         data() {
             return {
-                username:'',
-                UserPower:sessionStorage.getItem('power')
+                username: '',
+                UserPower: sessionStorage.getItem('power')
             }
         },
-        methods:{
+        methods: {
             exit() {
-                const that= this
+                const that = this
                 this.$confirm('将退出该系统, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -62,7 +65,7 @@
         }
         ,
         created() {
-           this.username= sessionStorage.getItem('username');
+            this.username = sessionStorage.getItem('username');
         }
     }
 </script>
