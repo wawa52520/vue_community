@@ -11,12 +11,13 @@
                 <el-option label="C" value="C"></el-option>
                 <el-option label="高数" value="高数"></el-option>
                 <el-option label="云计算" value="云计算"></el-option>
+                <el-option label="前端" value="前端"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="老师列表" prop="teacherTag">
             <el-select v-model="ruleForm.teacherTag" placeholder="请选择提问老师">
                 <el-option label="张老师" value="张老师"></el-option>
-                <el-option label="赵老师" value="赵老师"></el-option>
+                <el-option label="tea" value="tea"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="问题描述" prop="description">
@@ -46,7 +47,7 @@
                 rules: {
                     title: [
                         {required: true, message: '请输入问题标题', trigger: 'blur'},
-                        {min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur'}
+                        {min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur'}
                     ],
                     tag: [
                         {required: true, message: '请选择问题标签', trigger: 'change'}

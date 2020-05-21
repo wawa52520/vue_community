@@ -3,7 +3,7 @@
         <el-container>
             <el-header>问题标题：{{answerData.title}}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;提问者：{{answerData.questioner}}
             </el-header>
-            <el-main style="height: 750px;text-align: left" >
+            <el-main style="height: 750px;text-align: left">
                 <span>问题描述：</span>
                 <el-input
                         type="textarea"
@@ -22,6 +22,7 @@
                 >
                 </el-input>
                 <el-button type="primary" icon="el-icon-upload" style="float: right" @click="reply()">回复</el-button>
+<!--                <button @click="test()">test</button>-->
             </el-main>
 
         </el-container>
@@ -39,34 +40,45 @@
                     description: '',
                     answer: '',
                     teacherTag: '',
-                    questioner:'',
-                    id:this.$route.query.id
+                    questioner: '',
+                    id: this.$route.query.id
                 },
-                TeacherAnswer:{
-                    answer:'',
-                    id:this.$route.query.id
+                TeacherAnswer: {
+                    answer: '',
+                    id: this.$route.query.id
                 }
             }
         },
-        methods:{
-            reply(){
-                const that=this;
+        methods: {
+            // test() {
+            //     console.log(this.answerData.answer.length )
+            // },
+            reply() {
+                const that = this;
                 // console.log(this.TeacherAnswer);
-                this.$axios.post(apiUrl+'/Question/answerQuestion',this.answerData).then(function (resp) {
-                    if (resp.data=='success'){
-                        that.$message({
-                            type: 'success',
-                            message: '回复成功!'
-                        });
-                        that.$router.push('/WaitForReply')
-                    }
-                })
+                if (that.answerData.answer != null && that.answerData.answer.trim().length != 0) {
+                    this.$axios.post(apiUrl + '/Question/answerQuestion', this.answerData).then(function (resp) {
+                        if (resp.data == 'success') {
+                            that.$message({
+                                type: 'success',
+                                message: '回复成功!'
+                            });
+                            that.$router.push('/WaitForReply')
+                        }
+                    })
+                } else {
+                    that.$message({
+                        message: '回复不能为空！',
+                        type: 'warning'
+                    })
+                }
+
             }
         },
         created() {
             //通过route拿参数（id）
             const that = this
-            this.$axios.get(apiUrl+'/Question/findById/' + this.$route.query.id).then(function (resp) {
+            this.$axios.get(apiUrl + '/Question/findById/' + this.$route.query.id).then(function (resp) {
                 that.answerData = resp.data
             })
         }

@@ -16,6 +16,7 @@ import ReplyQuestion from "../views/ReplyQuestion"
 import UserManage from "../views/UserManage"
 import EditUser from  "../views/EditUser"
 import AdminUpdateQuestion from "../views/AdminUpdateQuestion"
+import UserStatistics from  "../views/UserStatistics"
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +37,11 @@ const routes = [
             name: "用户管理",
             component: UserManage,
             power:['管理员']
+        },{
+            path:"/UserStatistics",
+            name:"数据统计",
+            component:UserStatistics,
+            power:['管理员','教师']
         },
             {
             path:'/SearchQuestion',
